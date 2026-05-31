@@ -1,0 +1,9 @@
+# outreach-copilot — cron schedule (Linux / non-macOS alternative to launchd)
+# Install with:  crontab -e   and paste the two lines render.sh prints for your campaign.
+# Times are in the server's local timezone. Adjust as needed.
+#
+# Reply-sweep (every ${SWEEP_INTERVAL_HOURS}h, or daily at ${SWEEP_HOUR}:${SWEEP_MIN} when =24):
+${SWEEP_CRON_SCHEDULE}  OUTREACH_HOME=${OUTREACH_HOME} ${REPO_DIR}/engine/run-agent.sh ${CAMPAIGN_SLUG} sweep >> ${CAMP_DIR}/sweep.cron.log 2>&1
+#
+# Sender every ${SENDER_INTERVAL_HOURS}h (at minute 30):
+30 */${SENDER_INTERVAL_HOURS} * * *  OUTREACH_HOME=${OUTREACH_HOME} ${REPO_DIR}/engine/run-agent.sh ${CAMPAIGN_SLUG} sender >> ${CAMP_DIR}/sender.cron.log 2>&1

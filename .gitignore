@@ -1,0 +1,27 @@
+# ---- Real campaigns & secrets (NEVER commit) ----
+# Your live campaign configs (anything but the example) stay local.
+campaigns/*.conf
+!campaigns/example.campaign.conf
+campaigns/*.local.*
+secrets/
+*.api-key
+.api-key
+.env
+
+# Rendered, machine-local runtime (prompts/plists/logs are generated per machine)
+.rendered/
+run.log
+*.log
+launchd-out.log
+launchd-err.log
+.known-claude-version
+
+# Prospect data exports
+prospects/*.csv
+*.local.csv
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

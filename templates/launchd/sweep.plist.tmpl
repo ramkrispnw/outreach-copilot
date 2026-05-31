@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.outreach-copilot.${CAMPAIGN_SLUG}.sweep</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>${REPO_DIR}/engine/run-agent.sh</string>
+        <string>${CAMPAIGN_SLUG}</string>
+        <string>sweep</string>
+    </array>
+    ${SWEEP_SCHEDULE_XML}
+    <key>StandardOutPath</key>
+    <string>${CAMP_DIR}/sweep.launchd-out.log</string>
+    <key>StandardErrorPath</key>
+    <string>${CAMP_DIR}/sweep.launchd-err.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>HOME</key><string>${HOME}</string>
+        <key>OUTREACH_HOME</key><string>${OUTREACH_HOME}</string>
+        <key>PATH</key><string>${HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>
