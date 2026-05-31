@@ -1,5 +1,6 @@
 # outreach-copilot
 
+[![CI](https://github.com/ramkrispnw/outreach-copilot/actions/workflows/ci.yml/badge.svg)](https://github.com/ramkrispnw/outreach-copilot/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Status: v0.1.0](https://img.shields.io/badge/status-v0.1.0-orange.svg)
 
