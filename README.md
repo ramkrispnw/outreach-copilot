@@ -44,7 +44,7 @@ In Claude Code, run the bundled skill:
 /setup-outreach-campaign
 ```
 
-It interviews you about **what outreach you want to build**, asks **how many** prospects to shortlist and **confirms the selection methodology** (what matters, what doesn't), then **researches and builds the shortlist**, creates and seeds the tracker, helps you send the BCC outreach, and installs the jobs. (Copy `skill/setup-outreach-campaign/` into your Claude Code skills directory, or point Claude at this repo.)
+It interviews you about **what outreach you want to build**, asks **how many** prospects to shortlist and **confirms the selection methodology** (what matters, what doesn't), then **researches and builds the shortlist**, creates and seeds the tracker, helps you send the BCC outreach, and installs the jobs. (Install it once: copy `skill/setup-outreach-campaign/` into `~/.claude/skills/`, or open this repo in Claude Code and ask it to run the setup.)
 
 ### Option B — manual CLI
 ```bash
@@ -74,6 +74,21 @@ Edit the config and re-run `scripts/render.sh <slug>` (and `install.sh <slug>` i
 
 ## Multiple campaigns
 Each campaign is its own `<slug>.conf` + tracker + jobs. Run as many as you want side by side.
+
+## Status & limitations
+Early release. The engine is the same code proven on a real campaign, but validating a fresh
+first-run setup is on you. Known constraints, up front:
+- **Requires Claude Code + Anthropic usage** (the agents run via `claude --print`) and a local
+  **workspace-mcp** Google backend — cloud-only Google connectors can't drive the unattended jobs.
+- **Scheduling:** auto-install uses **launchd (macOS)**; Linux uses **cron** (lines printed for you);
+  Windows isn't supported out of the box.
+- **iMessage** pings are macOS-only; everyone can use the email digest (default) or Slack.
+- **Single user, one machine** per campaign — the OAuth token and scheduled jobs live there.
+- **It sends real email on your behalf.** You approve every message, but you are responsible for
+  accuracy and for complying with anti-spam (CAN-SPAM/GDPR), privacy, and professional-conduct
+  rules. Not legal advice.
+- **Auto-shortlist quality** depends on the model and the rubric you approve — verify facts before
+  acting on high-stakes outreach; the tool flags what it couldn't verify rather than inventing.
 
 ## Privacy
 Your data stays in **your** Google account and a local `~/.outreach-copilot/` dir. Real configs, prospect lists, and logs are gitignored. See **[docs/PRIVACY.md](docs/PRIVACY.md)**.
