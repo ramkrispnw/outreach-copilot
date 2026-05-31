@@ -23,7 +23,7 @@ Ask the user (conversationally, or run `scripts/init.sh` which presets these by 
 - The **goal / archetype** (hiring, vendor selection, fundraising, sales, partnerships, press, counsel, real estate, custom).
 - **Who they are** to the recipients (one-line persona) and their **reply voice/signature**.
 - The **questions they want answered** by each prospect (these become the 4 tracked fields / EXTRACTION_TOPICS).
-- **Scheduling**: do they want calendar-aware call scheduling? timezone, window, duration.
+- **Scheduling**: do they want calendar-aware call scheduling? timezone, window, duration, and which calendar (`CALENDAR_ID`, default `primary`). Remind them it needs the Calendar API enabled + read/write scope granted, and that confirmed calls add the prospect as a guest (they get an invite). See `docs/CALENDAR.md`.
 - **Notifications**: explain that they always get an email digest in their own inbox; `NOTIFY_CHANNEL` (email | imessage | slack | none) adds an optional instant ping. If they pick imessage, capture `IMESSAGE_RECIPIENT` and note the macOS Automation permission; if slack, capture `SLACK_WEBHOOK_URL`. Point them to `docs/NOTIFICATIONS.md`.
 - **Frequency for ALL jobs**: how often the reply-sweep runs (`SWEEP_INTERVAL_HOURS`, 24=daily at a time; <24=every N hours) and how often the sender runs (`SENDER_INTERVAL_HOURS`).
 Write/update `campaigns/<slug>.conf` with the answers (start from `campaigns/example.campaign.conf`).

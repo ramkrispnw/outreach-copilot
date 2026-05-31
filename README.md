@@ -61,7 +61,7 @@ Then do the one manual sheet step (Status dropdown) from **[sheet/SETUP.md](shee
 Everything lives in `campaigns/<slug>.conf` (start from [`campaigns/example.campaign.conf`](campaigns/example.campaign.conf)). Highlights:
 - **Persona & voice** — who you are to recipients, signature, tone; `PHONE_DISCRETION` (email-only scheduling) and `DISCLOSE_COMPARISON`.
 - **Extraction topics** — the (up to 4) questions you want answered by each prospect; they become tracker columns.
-- **Scheduling** — timezone, call window, duration (or turn it off).
+- **Scheduling** — timezone, call window, duration, which calendar (or turn it off). Needs the Calendar API + read/write scope: [docs/CALENDAR.md](docs/CALENDAR.md).
 - **Frequency for both jobs** — `SWEEP_INTERVAL_HOURS` (24 = daily at `SWEEP_HOUR:SWEEP_MIN`, or every N hours) and `SENDER_INTERVAL_HOURS`.
 - **Notifications** — you always get an email digest; `NOTIFY_CHANNEL` (email | imessage | slack | none) adds an optional instant ping. Setup per channel: [docs/NOTIFICATIONS.md](docs/NOTIFICATIONS.md).
 
