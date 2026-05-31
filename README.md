@@ -6,13 +6,13 @@
 
 ### Reach out to many. Drown in none.
 
-Tell it a goal — *"find me 25 vendors / investors / candidates who fit X"* — and **outreach-copilot does the deep research to find and shortlist them** (ranked against criteria you approve), seeds a tracker, and helps you send one outreach email.
+Tell it a goal — *"find 25 investors who back seed-stage fintech"* or just *"5 well-reviewed landscapers near me"* — and **outreach-copilot does the deep research to find and shortlist them** (ranked against criteria you approve), seeds a tracker, and helps you send one outreach email.
 
 From there it runs the entire reply loop: it reads every response into a Google Sheet and **drafts a tailored reply to each** — in your voice, reading their attachments, offering only times you're actually free — then **sends only the ones you approve**, properly threaded and never twice, and books confirmed calls on your calendar.
 
 **Two things are yours:** decide who to reach, and approve the drafts. It handles the **researching, list-building, tracking, drafting, scheduling, and sending** — so nothing slips and every prospect gets a real reply.
 
-Works for **any multi-prospect outreach** — hiring, vendor selection, fundraising, sales, partnerships, press, professional counsel, real-estate agents. One config file per campaign; the engine is generic.
+Works for **any multi-prospect outreach** — from raising a round, hiring, vendor selection, partnerships, and press, to the everyday stuff: **getting quotes from contractors, landscapers, handymen, movers, plumbers — any local pro**. High-stakes or mundane, it's the same loop. One config file per campaign; the engine is generic.
 
 ## How it works in 30 seconds
 

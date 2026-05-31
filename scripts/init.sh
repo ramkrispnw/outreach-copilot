@@ -23,8 +23,9 @@ echo "  5) Partnerships / business development"
 echo "  6) Press / PR / media"
 echo "  7) Professional services / counsel (lawyers, advisors)"
 echo "  8) Real-estate agents"
-echo "  9) Custom"
-TYPE="$(ask 'Choose 1-9' '7')"
+echo "  9) Home services / local quotes (contractor, landscaper, handyman, mover, plumber)"
+echo " 10) Custom"
+TYPE="$(ask 'Choose 1-10' '9')"
 
 case "$TYPE" in
   1) TOPICS="Role fit and relevant experience
@@ -59,6 +60,10 @@ Relevant experience with my specific situation"; PERSONA_HINT="I'm evaluating co
 Commission and what's included
 Availability and communication cadence
 References"; PERSONA_HINT="I'm looking for an agent to help with <buy/sell> in <area>."; DISC="true" ;;
+  9) TOPICS="Scope of the job and their approach
+Itemized quote / estimate
+Earliest availability and timeline
+License, insurance, and reviews/references"; PERSONA_HINT="I'm getting quotes for <job> at <location> and comparing a few local pros."; DISC="true" ;;
   *) TOPICS="Topic 1
 Topic 2
 Topic 3

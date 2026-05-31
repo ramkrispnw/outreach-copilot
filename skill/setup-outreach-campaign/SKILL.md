@@ -20,7 +20,7 @@ claude.ai cloud Google connectors — they can't do the cell-level writes the se
 
 ## Phase 1 — Interview: "what outreach do you want to build?"
 Ask the user (conversationally, or run `scripts/init.sh` which presets these by archetype):
-- The **goal / archetype** (hiring, vendor selection, fundraising, sales, partnerships, press, counsel, real estate, custom).
+- The **goal / archetype** (hiring, vendor selection, fundraising, sales, partnerships, press, counsel, real estate, **home services / local quotes** — contractors, landscapers, handymen, movers — or custom). High-stakes or mundane, the flow is the same.
 - **Who they are** to the recipients (one-line persona) and their **reply voice/signature**.
 - The **questions they want answered** by each prospect (these become the 4 tracked fields / EXTRACTION_TOPICS).
 - **Scheduling**: do they want calendar-aware call scheduling? timezone, window, duration, and which calendar (`CALENDAR_ID`, default `primary`). Remind them it needs the Calendar API enabled + read/write scope granted, and that confirmed calls add the prospect as a guest (they get an invite). See `docs/CALENDAR.md`.
