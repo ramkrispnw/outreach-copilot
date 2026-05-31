@@ -1,0 +1,44 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-and-render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Shell syntax check (bash -n)
+        run: |
+          for f in scripts/*.sh engine/run-agent.sh engine/lib/notify.sh; do
+            echo "bash -n $f"; bash -n "$f"
+          done
+
+      - name: ShellCheck
+        run: |
+          shellcheck -S warning scripts/*.sh engine/run-agent.sh engine/lib/notify.sh || true
+          # Hard-fail only on errors, not warnings/info (scripts source config dynamically).
+          shellcheck -S error scripts/*.sh engine/run-agent.sh engine/lib/notify.sh
+
+      - name: Render smoke test (no leftover placeholders)
+        run: |
+          set -euo pipefail
+          cp campaigns/example.campaign.conf campaigns/_ci.conf
+          sed -i 's/^CAMPAIGN_SLUG=.*/CAMPAIGN_SLUG="_ci"/; s/^SPREADSHEET_ID=.*/SPREADSHEET_ID="CI"/' campaigns/_ci.conf
+          OUTREACH_HOME="$RUNNER_TEMP/oc" scripts/render.sh _ci
+          left=$(grep -roE '\$\{[A-Za-z0-9_]+\}' "$RUNNER_TEMP/oc/_ci/" || true)
+          if [ -n "$left" ]; then echo "Unsubstituted placeholders found:"; echo "$left"; exit 1; fi
+          echo "Render smoke test passed — no leftover placeholders."
+
+      - name: Secret/PII guard (no real credentials committed)
+        run: |
+          if git grep -nIE 'GOCSPX-[A-Za-z0-9_-]+|apps\.googleusercontent\.com' -- . ':!*.md'; then
+            echo "Possible committed OAuth credential — failing."; exit 1
+          fi
+          echo "No committed credentials."
