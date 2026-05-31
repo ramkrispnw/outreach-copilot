@@ -1,10 +1,14 @@
 # outreach-copilot
 
-**Track replies from a list of prospects, draft your responses, and send the ones you approve — on autopilot.** Built for any multi-prospect outreach: hiring, vendor selection, fundraising, sales, partnerships, press, professional counsel, real-estate agents, anything.
+### Reach out to many. Drown in none.
 
-You BCC a batch of prospects once. From then on, a daily **sweep** reads their replies into a Google Sheet, drafts your response to each (calendar-aware, and it reads their attachments), and waits. You skim the drafts, flip a few to **Approved**, and a **sender** mails them — properly threaded, never double-sent — and books confirmed calls on your calendar.
+You email a batch of people — candidates, vendors, investors, journalists, lawyers — and then the replies pile up. Some answer, some go quiet, each one needs a thoughtful, tailored response and a call on the calendar. **outreach-copilot runs that entire middle for you.**
 
-Everything campaign-specific is one config file. The engine is generic.
+It reads every reply into a Google Sheet, **drafts a tailored response to each** — in your voice, reading any attachments they send, and offering only times you're actually free — then **sends only the ones you approve**, properly threaded and never twice, and books confirmed calls on your calendar.
+
+**You do two things:** send the first email, and skim a column of ready-to-send drafts. It handles the tracking, drafting, scheduling, and sending — so nothing slips and every prospect gets a real reply.
+
+Works for **any multi-prospect outreach** — hiring, vendor selection, fundraising, sales, partnerships, press, professional counsel, real-estate agents. One config file per campaign; the engine is generic.
 
 ```
 prospects reply → Gmail → [SWEEP] → Google Sheet (Prospects · Replies Log · Drafts)
