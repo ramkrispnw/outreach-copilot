@@ -1,5 +1,8 @@
 # outreach-copilot
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Status: v0.1.0](https://img.shields.io/badge/status-v0.1.0-orange.svg)
+
 ### Reach out to many. Drown in none.
 
 You email a batch of people — candidates, vendors, investors, journalists, lawyers — and then the replies pile up. Some answer, some go quiet, each one needs a thoughtful, tailored response and a call on the calendar. **outreach-copilot runs that entire middle for you.**
