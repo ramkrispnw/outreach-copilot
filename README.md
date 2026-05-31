@@ -14,12 +14,24 @@ It reads every reply into a Google Sheet, **drafts a tailored response to each**
 
 Works for **any multi-prospect outreach** — hiring, vendor selection, fundraising, sales, partnerships, press, professional counsel, real-estate agents. One config file per campaign; the engine is generic.
 
+## How it works in 30 seconds
+
 ```
 prospects reply → Gmail → [SWEEP] → Google Sheet (Prospects · Replies Log · Drafts)
                                          ↑ you set Status = Approved
                                          ↓
                                     [SENDER] → threaded reply + calendar invite
 ```
+
+1. **You send one BCC outreach** to your prospect list, and tell the tool the subject + which domains it went to.
+2. **The sweep** (on your schedule) reads each reply into the sheet and writes a ready-to-send **draft** of your response — in your voice, reading their attachments, proposing only times you're actually free.
+3. **You skim the Drafts tab** and flip `Status → Approved` on the ones you like (edit the wording first if you want).
+4. **The sender** mails the approved ones — threaded, never twice — marks them **Sent**, and drops any confirmed call on your calendar.
+
+<!-- Screenshot placeholder: capture the Drafts tab (showing the Pending/Approved/Sent color-coding)
+     as docs/media/tracker.png, then uncomment the line below. Guidance: docs/media/README.md
+![The Drafts tab — every reply becomes a Pending draft you flip to Approved](docs/media/tracker.png)
+-->
 
 ## What you get
 - **A tracker sheet** (CRM): one row per prospect, a replies log, and a Drafts queue with a Status dropdown.
@@ -41,14 +53,35 @@ Run `scripts/preflight.sh` to check all of the above in one shot.
 
 ## Quick start
 
-### Option A — guided (recommended)
-In Claude Code, run the bundled skill:
+### Option A — guided by Claude Code (recommended)
+The repo ships a Claude Code **skill** that does the whole setup conversationally. Three steps:
 
+**1. Get the repo:**
+```bash
+git clone https://github.com/ramkrispnw/outreach-copilot.git
+cd outreach-copilot
+```
+
+**2. Install the skill** so Claude Code can find it — copy it into your personal skills folder:
+```bash
+mkdir -p ~/.claude/skills
+cp -r skill/setup-outreach-campaign ~/.claude/skills/
+```
+
+**3. Open Claude Code in this folder and run the skill:**
+```bash
+claude            # starts Claude Code in the current directory
+```
+then, at the Claude Code prompt, type:
 ```
 /setup-outreach-campaign
 ```
+(Type it in full and press Enter — it shows up once the skill is in `~/.claude/skills/`.)
 
-It interviews you about **what outreach you want to build**, asks **how many** prospects to shortlist and **confirms the selection methodology** (what matters, what doesn't), then **researches and builds the shortlist**, creates and seeds the tracker, helps you send the BCC outreach, and installs the jobs. (Install it once: copy `skill/setup-outreach-campaign/` into `~/.claude/skills/`, or open this repo in Claude Code and ask it to run the setup.)
+From there it interviews you about **what outreach you want to build**, asks **how many** prospects to shortlist and **confirms the selection methodology** (what matters, what doesn't), then **researches and builds the shortlist**, creates and seeds the tracker, helps you send the BCC outreach, and installs the scheduled jobs.
+
+> **Don't want to install the skill?** Just open the repo in Claude Code and say:
+> *"Set up an outreach-copilot campaign for me."* Claude will follow `skill/setup-outreach-campaign/SKILL.md` directly. Or use the manual CLI path in Option B.
 
 ### Option B — manual CLI
 ```bash
@@ -104,4 +137,4 @@ See **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** for the two-agent design, i
 MIT — see [LICENSE](LICENSE). This software automates email on your behalf; you are responsible for what you send and for complying with anti-spam, privacy, and professional-conduct rules. Not legal advice.
 
 ---
-*Born from a real EB-5 immigration-counsel search that needed to track 26 lawyers' replies, draft responses, and book intro calls — generalized so you can point it at any prospecting you need to do.*
+*Turns a pile of inbound replies into a short queue of approve-and-send drafts — so reaching out to many people stops meaning drowning in follow-up. Point it at any prospecting you need to do.*
