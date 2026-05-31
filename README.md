@@ -23,7 +23,9 @@ prospects reply → Gmail → [SWEEP] → Google Sheet (Prospects · Replies Log
                                     [SENDER] → threaded reply + calendar invite
 ```
 
-1. **You send one BCC outreach** to your prospect list, and tell the tool the subject + which domains it went to.
+**Setup (once, guided by the skill):** describe who you want to reach and how many — it runs **deep research**, shortlists the best matches against criteria you approve, builds the tracker, and helps you send the first outreach. Then the loop runs:
+
+1. **You send one BCC outreach** to your prospect list (the skill helps draft + send it), and the tool notes the subject + which domains it went to.
 2. **The sweep** (on your schedule) reads each reply into the sheet and writes a ready-to-send **draft** of your response — in your voice, reading their attachments, proposing only times you're actually free.
 3. **You skim the Drafts tab** and flip `Status → Approved` on the ones you like (edit the wording first if you want).
 4. **The sender** mails the approved ones — threaded, never twice — marks them **Sent**, and drops any confirmed call on your calendar.
@@ -34,6 +36,7 @@ prospects reply → Gmail → [SWEEP] → Google Sheet (Prospects · Replies Log
 -->
 
 ## What you get
+- **A researched shortlist to start from**: tell the setup skill who you're after and how many — it runs **deep research**, ranks candidates against criteria you approve, and seeds your tracker. You don't hand-build the prospect list.
 - **A tracker sheet** (CRM): one row per prospect, a replies log, and a Drafts queue with a Status dropdown.
 - **Daily reply-sweep** that classifies replies, extracts the things you care about, **reads attachments** (engagement letters, quotes, decks) and engages with their contents, and drafts your reply.
 - **Calendar-aware scheduling**: proposes only genuinely-free slots, never offers the same slot twice, and books the call once a confirmation actually sends.
