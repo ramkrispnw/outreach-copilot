@@ -17,7 +17,7 @@ if claude mcp list 2>/dev/null | grep -qiE "workspace-mcp|workspace_mcp"; then
   echo "  [ok]   workspace-mcp is registered with Claude Code"
 else
   echo "  [MISS] workspace-mcp not found in 'claude mcp list'."
-  echo "         Install it (one-time):  see docs/BACKENDS.md"
+  echo "         Install it (one-time):  see docs/SETUP-WORKSPACE-MCP.md"
   echo "         Then authenticate it to the Google account in your campaign.conf."
   ok=1
 fi

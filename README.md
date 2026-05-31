@@ -21,11 +21,15 @@ prospects reply → Gmail → [SWEEP] → Google Sheet (Prospects · Replies Log
 - **Pluggable notifications** (email / iMessage / Slack / none) and **configurable frequency** for both jobs.
 
 ## Prerequisites
-- **Claude Code**.
-- **Google Workspace MCP (workspace-mcp)** registered in Claude Code and authed to your Google account — this is what gives reliable Gmail/Sheets/Calendar writes for the headless jobs. See **[docs/BACKENDS.md](docs/BACKENDS.md)** (and why the cloud connectors aren't enough).
-- `envsubst` (gettext) + `curl`. **launchd** (macOS) or **cron** (Linux) for scheduling.
+Have all of these before you start — `scripts/preflight.sh` verifies each and tells you exactly what's missing:
 
-Run `scripts/preflight.sh` to check all of the above.
+1. **Claude Code** — the CLI this runs on.
+2. **Google Workspace MCP (`workspace-mcp`)** — registered in Claude Code and authenticated to the Google account you'll use. This is the **required backend** for reliable Gmail/Sheets/Calendar *writes*; the hosted cloud connectors are **not** sufficient for the unattended sender (see [docs/BACKENDS.md](docs/BACKENDS.md) for why). **Full walkthrough → [docs/SETUP-WORKSPACE-MCP.md](docs/SETUP-WORKSPACE-MCP.md)**: needs Python 3.10+/`uv`, a Google Cloud OAuth (Desktop) client, the Gmail/Sheets/Drive/Calendar APIs enabled, a one-time browser consent, and the server kept running for scheduled jobs.
+3. **python3** (renders config → prompts) and **curl** (notifications).
+4. A scheduler: **launchd** (macOS, automatic) or **cron** (Linux; `install.sh` prints the lines).
+5. *(optional)* `ANTHROPIC_API_KEY` at `~/.outreach-copilot/<slug>/.api-key` as a retry fallback.
+
+Run `scripts/preflight.sh` to check all of the above in one shot.
 
 ## Quick start
 

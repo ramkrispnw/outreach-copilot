@@ -21,11 +21,11 @@ Why local workspace-mcp specifically:
 > sending lives locally on workspace-mcp. Don't substitute the cloud connector for the jobs.
 
 ### Install (one-time)
-1. Install Claude Code.
-2. Add the Google Workspace MCP server and authenticate it to the Google account you'll use
-   for the campaign (the same address as `GOOGLE_ACCOUNT` in your config). Follow the
-   workspace-mcp project's README for the exact `claude mcp add ...` command and OAuth flow.
-3. Verify: `claude mcp list` should show `workspace-mcp`. `scripts/preflight.sh` checks this.
+Full step-by-step (Python/uv, Google Cloud OAuth client, APIs to enable, `claude mcp add`,
+one-time consent, and keeping it running for scheduled jobs) is in
+**[SETUP-WORKSPACE-MCP.md](SETUP-WORKSPACE-MCP.md)**. In short: `uvx workspace-mcp`, create a
+Desktop OAuth client, register it in Claude Code, approve consent once, and authenticate the
+account that matches `GOOGLE_ACCOUNT`. Verify with `claude mcp list` (or `scripts/preflight.sh`).
 
 ## "What if a user doesn't have workspace-mcp?"
 - **Recommended:** install it (above). It's free and is the path this project is built and

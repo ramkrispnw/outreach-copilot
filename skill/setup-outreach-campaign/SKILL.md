@@ -13,7 +13,9 @@ phases in order. Confirm with the user at each decision point — never assume s
 Run `scripts/preflight.sh`. The hard requirement is **workspace-mcp** (Google Workspace MCP)
 registered in Claude Code and authenticated to the user's Google account — it provides the
 reliable Gmail/Sheets/Calendar **writes** the headless jobs need. If it's missing, stop and
-walk the user through `docs/BACKENDS.md` before continuing. Do NOT try to substitute the
+walk the user through **`docs/SETUP-WORKSPACE-MCP.md`** step by step (Python/uv, Google Cloud
+OAuth Desktop client, enable Gmail/Sheets/Drive/Calendar APIs, `claude mcp add`, one-time consent,
+and keeping the server running for the scheduled jobs) before continuing. Do NOT try to substitute the
 claude.ai cloud Google connectors — they can't do the cell-level writes the sender relies on.
 
 ## Phase 1 — Interview: "what outreach do you want to build?"
