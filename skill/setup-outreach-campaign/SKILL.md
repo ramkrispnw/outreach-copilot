@@ -24,7 +24,7 @@ Ask the user (conversationally, or run `scripts/init.sh` which presets these by 
 - **Who they are** to the recipients (one-line persona) and their **reply voice/signature**.
 - The **questions they want answered** by each prospect (these become the 4 tracked fields / EXTRACTION_TOPICS).
 - **Scheduling**: do they want calendar-aware call scheduling? timezone, window, duration.
-- **Notifications**: email | imessage | slack | none.
+- **Notifications**: explain that they always get an email digest in their own inbox; `NOTIFY_CHANNEL` (email | imessage | slack | none) adds an optional instant ping. If they pick imessage, capture `IMESSAGE_RECIPIENT` and note the macOS Automation permission; if slack, capture `SLACK_WEBHOOK_URL`. Point them to `docs/NOTIFICATIONS.md`.
 - **Frequency for ALL jobs**: how often the reply-sweep runs (`SWEEP_INTERVAL_HOURS`, 24=daily at a time; <24=every N hours) and how often the sender runs (`SENDER_INTERVAL_HOURS`).
 Write/update `campaigns/<slug>.conf` with the answers (start from `campaigns/example.campaign.conf`).
 Apply two voice rules consistently: keep the user's phone out of replies (email-only scheduling)

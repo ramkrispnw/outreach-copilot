@@ -22,7 +22,7 @@ prospects reply → Gmail → [SWEEP] → Google Sheet (Prospects · Replies Log
 - **Daily reply-sweep** that classifies replies, extracts the things you care about, **reads attachments** (engagement letters, quotes, decks) and engages with their contents, and drafts your reply.
 - **Calendar-aware scheduling**: proposes only genuinely-free slots, never offers the same slot twice, and books the call once a confirmation actually sends.
 - **Approve-to-send**: nothing reaches a prospect until you mark a draft Approved. The sender is idempotent — a sent row is terminal.
-- **Pluggable notifications** (email / iMessage / Slack / none) and **configurable frequency** for both jobs.
+- **Notifications you choose**: you always get an **email digest** of new replies in your own inbox; optionally add an **instant ping** by iMessage or Slack. Plus **configurable frequency** for both jobs. (See [docs/NOTIFICATIONS.md](docs/NOTIFICATIONS.md).)
 
 ## Prerequisites
 Have all of these before you start — `scripts/preflight.sh` verifies each and tells you exactly what's missing:
@@ -63,7 +63,7 @@ Everything lives in `campaigns/<slug>.conf` (start from [`campaigns/example.camp
 - **Extraction topics** — the (up to 4) questions you want answered by each prospect; they become tracker columns.
 - **Scheduling** — timezone, call window, duration (or turn it off).
 - **Frequency for both jobs** — `SWEEP_INTERVAL_HOURS` (24 = daily at `SWEEP_HOUR:SWEEP_MIN`, or every N hours) and `SENDER_INTERVAL_HOURS`.
-- **Notifications** — `NOTIFY_CHANNEL` = email | imessage | slack | none.
+- **Notifications** — you always get an email digest; `NOTIFY_CHANNEL` (email | imessage | slack | none) adds an optional instant ping. Setup per channel: [docs/NOTIFICATIONS.md](docs/NOTIFICATIONS.md).
 
 Edit the config and re-run `scripts/render.sh <slug>` (and `install.sh <slug>` if the schedule changed).
 
