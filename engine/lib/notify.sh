@@ -12,7 +12,14 @@ notify_send() {
       [ -z "${IMESSAGE_RECIPIENT:-}" ] && return 0
       command -v osascript >/dev/null 2>&1 || return 0
       local m="${msg//\\/\\\\}"; m="${m//\"/\\\"}"
-      osascript -e "tell application \"Messages\" to send \"$m\" to buddy \"$IMESSAGE_RECIPIENT\" of (1st service whose service type = iMessage)" >/dev/null 2>&1 || true
+      open -a Messages 2>/dev/null || true   # avoid AppleEvent timeout (-1712) on a cold/busy Messages
+      local i
+      for i in 1 2; do
+        osascript -e 'with timeout of 30 seconds' \
+          -e "tell application \"Messages\" to send \"$m\" to buddy \"$IMESSAGE_RECIPIENT\" of (1st service whose service type = iMessage)" \
+          -e 'end timeout' >/dev/null 2>&1 && return 0
+        sleep 5
+      done
       ;;
     slack)
       [ -z "${SLACK_WEBHOOK_URL:-}" ] && return 0

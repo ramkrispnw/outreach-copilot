@@ -66,7 +66,7 @@ is_retryable() {
     "stream idle timeout|partial response|TIMED OUT|connection.*reset|ECONNRESET|ETIMEDOUT|503|502|504|rate.*limit|overloaded|not logged in|unauthenticated|unauthorized|invalid.*key|auth.*fail|please.*login|ACTION REQUIRED: Google Authentication Needed"
 }
 
-EXIT_CODE=1
+EXIT_CODE=1; SUCCESS=0
 for ATTEMPT in 1 2 3; do
   if [ $((ATTEMPT % 2)) -eq 1 ] || [ ! -f "$API_KEY_FILE" ]; then
     unset ANTHROPIC_API_KEY
@@ -76,16 +76,30 @@ for ATTEMPT in 1 2 3; do
     echo "Attempt $ATTEMPT: API key [$(date)]" >> "$LOG_FILE"
   fi
   run_claude; EXIT_CODE=$?
-  [ $EXIT_CODE -eq 0 ] && break
-  is_retryable || { echo "Non-retryable (exit $EXIT_CODE) - stop." >> "$LOG_FILE"; break; }
-  [ $ATTEMPT -lt 3 ] && { echo "Retryable - backoff $((ATTEMPT*300))s" >> "$LOG_FILE"; sleep $((ATTEMPT*300)); }
+  HAS_OK=$(printf '%s\n' "$LAST_STDOUT" | grep -cE '^NOTIFY: ')
+  HAS_FAIL=$(printf '%s\n' "$LAST_STDOUT" | grep -cE '^RUN_FAILED:')
+  # Trust the terminal NOTIFY line, not the exit code: `claude --print` can exit 0 even when the
+  # agent never reached its MCP tools. A RUN_FAILED sentinel, or no NOTIFY line at all, means retry.
+  if [ "$EXIT_CODE" -eq 0 ] && [ "$HAS_OK" -ge 1 ] && [ "$HAS_FAIL" -eq 0 ]; then SUCCESS=1; break; fi
+  if [ "$HAS_FAIL" -ge 1 ]; then
+    echo "Attempt $ATTEMPT: RUN_FAILED (tools/auth unavailable) - retry." >> "$LOG_FILE"
+  elif [ "$HAS_OK" -eq 0 ]; then
+    echo "Attempt $ATTEMPT: no terminal NOTIFY/RUN_FAILED line (died/truncated) - retry." >> "$LOG_FILE"
+  elif ! is_retryable; then
+    echo "Non-retryable (exit $EXIT_CODE) - stop." >> "$LOG_FILE"; break
+  fi
+  [ $ATTEMPT -lt 3 ] && { echo "Backoff $((ATTEMPT*300))s" >> "$LOG_FILE"; sleep $((ATTEMPT*300)); }
 done
 
-echo "$SLUG $ROLE finished (exit $EXIT_CODE): $(date)" >> "$LOG_FILE"
-if [ $EXIT_CODE -eq 0 ]; then
+echo "$SLUG $ROLE finished (exit $EXIT_CODE, success $SUCCESS): $(date)" >> "$LOG_FILE"
+if [ "$SUCCESS" -eq 1 ]; then
   LINE=$(printf '%s\n' "$LAST_STDOUT" | grep -m1 '^NOTIFY: ' | sed 's/^NOTIFY: //')
   [ -n "$LINE" ] && notify_send "${NOTIFY_CHANNEL:-email}" "$LINE"
+  exit 0
 else
-  notify_send "${NOTIFY_CHANNEL:-email}" "$CAMPAIGN_NAME $ROLE FAILED $(date +%Y-%m-%d): exit $EXIT_CODE. Tail $LOG_FILE"
+  # Always notify on failure — a silent miss must never look like a quiet day.
+  REASON=$(printf '%s\n' "$LAST_STDOUT" | grep -m1 '^RUN_FAILED:' | sed 's/^RUN_FAILED:[[:space:]]*//')
+  [ -z "$REASON" ] && REASON="could not complete after $ATTEMPT attempt(s) (exit $EXIT_CODE, no terminal line)"
+  notify_send "${NOTIFY_CHANNEL:-email}" "$CAMPAIGN_NAME $ROLE FAILED $(date +%Y-%m-%d): $REASON. Tail $LOG_FILE"
+  exit 1
 fi
-exit $EXIT_CODE
