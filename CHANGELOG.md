@@ -5,6 +5,12 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/); versioni
 
 ## [Unreleased]
 ### Fixed
+- **workspace-mcp port exhaustion.** workspace-mcp (single-user) opens an OAuth-callback port in a
+  small default range (8000–8004); orphaned servers from prior `claude --print` runs squat those
+  ports and block new ones ("No available port in range…"), which silently breaks the headless
+  jobs while an interactive session keeps working. The runner now **reaps orphaned servers (PPID 1)
+  before each attempt**, and the setup guide registers workspace-mcp with
+  `WORKSPACE_MCP_PORT_FALLBACK_COUNT=25` to widen the range. Added troubleshooting docs.
 - **Silent-failure hardening.** The runner now trusts the agent's terminal line (`NOTIFY:`), not the
   `claude --print` exit code — which can be `0` even when the MCP tools never loaded (e.g. a cold-start
   race where workspace-mcp isn't warm yet). Prompts now emit a `RUN_FAILED: <reason>` sentinel on a

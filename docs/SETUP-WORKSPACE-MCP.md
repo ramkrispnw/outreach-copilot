@@ -31,8 +31,12 @@ claude mcp add workspace-mcp -s user \
   -e GOOGLE_OAUTH_CLIENT_ID="YOUR_CLIENT_ID.apps.googleusercontent.com" \
   -e GOOGLE_OAUTH_CLIENT_SECRET="YOUR_CLIENT_SECRET" \
   -e OAUTHLIB_INSECURE_TRANSPORT=1 \
+  -e WORKSPACE_MCP_PORT_FALLBACK_COUNT=25 \
   -- uvx --from workspace-mcp workspace-mcp --single-user
 ```
+`WORKSPACE_MCP_PORT_FALLBACK_COUNT=25` widens the OAuth-callback port range to 8000–8024. The
+default is just 8000–8004, which can lock up if a few orphaned server instances accumulate (the
+runner also reaps orphaned servers before each scheduled run — see below).
 Notes:
 - `-s user` registers it for **all** your projects (so the headless jobs see it too).
 - `--single-user` skips the multi-user OAuth 2.1 server — simplest for one person on one machine.
@@ -77,6 +81,12 @@ themselves each run. You do **not** need to keep a server process alive. You onl
 - *Writes/sends fail but reads work* → you didn't approve the write scopes (re-consent; don't use `--read-only`).
 - *`ACTION REQUIRED: Google Authentication Needed` in logs* → cached token expired/revoked; run any
   tool interactively once to refresh consent.
+- *`No available port in range [8000..8004]; all in use` / server "Failed to connect" while an
+  interactive session still works* → orphaned workspace-mcp servers from prior runs are squatting
+  the OAuth-callback ports. Clear them: `pkill -f 'workspace-mcp'` (frees the ports; a fresh server
+  respawns on next use). Prevent it: set `WORKSPACE_MCP_PORT_FALLBACK_COUNT=25` (above) and note the
+  runner already reaps orphaned servers (PPID 1) before each scheduled run. Inspect with
+  `lsof -nP -iTCP:8000-8024 -sTCP:LISTEN` and `pgrep -fl workspace-mcp`.
 - *Want a hosted/multi-user server instead?* → the project also supports `--transport streamable-http`
   with OAuth 2.1; see the upstream README. For one person, stdio single-user (above) is simplest.
 

@@ -66,6 +66,18 @@ is_retryable() {
     "stream idle timeout|partial response|TIMED OUT|connection.*reset|ECONNRESET|ETIMEDOUT|503|502|504|rate.*limit|overloaded|not logged in|unauthenticated|unauthorized|invalid.*key|auth.*fail|please.*login|ACTION REQUIRED: Google Authentication Needed"
 }
 
+reap_orphans() {
+  # workspace-mcp (single-user) opens a local OAuth-callback port (default range 8000-8004).
+  # Orphaned servers from prior runs squat those ports and block new ones from starting
+  # ("No available port in range ..."). Reap orphans (PPID 1) before each attempt; spares any
+  # server with a live parent. Pair with WORKSPACE_MCP_PORT_FALLBACK_COUNT in your MCP registration.
+  local pid ppid
+  for pid in $(pgrep -f 'workspace-mcp' 2>/dev/null); do
+    ppid=$(ps -o ppid= -p "$pid" 2>/dev/null | tr -d ' ')
+    [ "$ppid" = "1" ] && kill -9 "$pid" 2>/dev/null
+  done
+}
+
 EXIT_CODE=1; SUCCESS=0
 for ATTEMPT in 1 2 3; do
   if [ $((ATTEMPT % 2)) -eq 1 ] || [ ! -f "$API_KEY_FILE" ]; then
@@ -75,6 +87,7 @@ for ATTEMPT in 1 2 3; do
     export ANTHROPIC_API_KEY="$(cat "$API_KEY_FILE")"
     echo "Attempt $ATTEMPT: API key [$(date)]" >> "$LOG_FILE"
   fi
+  reap_orphans
   run_claude; EXIT_CODE=$?
   HAS_OK=$(printf '%s\n' "$LAST_STDOUT" | grep -cE '^NOTIFY: ')
   HAS_FAIL=$(printf '%s\n' "$LAST_STDOUT" | grep -cE '^RUN_FAILED:')
